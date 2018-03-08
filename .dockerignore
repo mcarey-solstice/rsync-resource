@@ -1,0 +1,23 @@
+###
+# Files to ignore in the docker image
+##
+.DS_Store
+._*
+.Trashes/
+
+# Linux
+*~
+*.swp
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Development extensions
+*.bak
+*.log
+*.out
+*.swp
+*.tmp

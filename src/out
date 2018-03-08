@@ -1,0 +1,5 @@
+#!/bin/sh
+
+source "$( cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P )"/.init.sh
+
+# out

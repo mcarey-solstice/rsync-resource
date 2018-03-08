@@ -1,0 +1,13 @@
+###
+# Package information
+##
+
+REPOSITORY = https://github.com/mcarey-solstice/rsync-resource
+AUTHOR = Mike Carey <mcarey@solstice.com>
+
+APP_NAME = rsync-resource
+VERSION = 1.0.0
+
+REQUIREMENTS = docker bash
+
+# package-info
