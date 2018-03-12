@@ -1,0 +1,30 @@
+###
+# Defines infrastructure for testing
+##
+
+version: '3'
+
+services:
+
+  app:
+    build: .
+    environment:
+      hostname: server
+      username: root
+    volumes:
+      - ./keys/key_rsa:/root/.ssh/id_rsa
+    links:
+      - server
+    depends_on:
+      - server
+  # app
+
+  server:
+    build: git://github.com/timlinux/docker-ssh
+    volumes:
+      - ./keys/key_rsa.pub:/root/.ssh/authorized_keys
+    expose:
+      - "22"
+  # server
+
+# docker-compose
