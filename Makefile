@@ -18,8 +18,8 @@ ifneq (,$(wildcard $(ENV_FILE)))
 	export $(shell sed 's/=.*//' $(ENV_FILE))
 endif
 
-APP_NAME = $(shell grep 'APP_NAME = ' $(PACKAGE_INFO) | sed 's/APP_NAME = //g')
-VERSION = $(shell grep 'VERSION = ' $(PACKAGE_INFO) | sed 's/VERSION = //g')
+APP_NAME ?= $(shell grep 'APP_NAME = ' $(PACKAGE_INFO) | sed 's/APP_NAME = //g')
+VERSION ?= $(shell grep 'VERSION = ' $(PACKAGE_INFO) | sed 's/VERSION = //g')
 
 DOCKER_TAG ?= $(APP_NAME)
 
