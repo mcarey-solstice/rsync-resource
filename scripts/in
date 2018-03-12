@@ -2,4 +2,6 @@
 
 source "$( cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P )"/.init.sh
 
+rsync "$target:${directory:-.}/$from" "$dest"
+
 # in

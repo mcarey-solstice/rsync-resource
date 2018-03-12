@@ -1,0 +1,10 @@
+###
+#
+##
+
+/.keys/
+/.env
+
+.data/
+
+# debug.gitignore

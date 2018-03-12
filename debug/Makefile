@@ -45,9 +45,9 @@ env: .env
 	cp ../.env.example .env
 # .env
 
-keys: keys/key_rsa
+keys: .keys/key_rsa
 
-keys/key_rsa:
+.keys/key_rsa:
 	./keygen.sh
 # keys
 
@@ -70,7 +70,7 @@ destroy:
 # destroy
 
 shell: start
-	docker-compose exec app sh
+	docker-compose exec client bash
 # shell
 
-# Makefile
+# debug.Makefile

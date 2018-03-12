@@ -6,13 +6,15 @@ version: '3'
 
 services:
 
-  app:
-    build: .
+  client:
+    build: ./client
     environment:
       hostname: server
       username: root
     volumes:
-      - ./keys/key_rsa:/root/.ssh/id_rsa
+      - ./.keys/key_rsa:/root/.ssh/id_rsa
+      - ../scripts:/opt/resources
+      - ./client/.data:/data
     links:
       - server
     depends_on:
@@ -20,11 +22,10 @@ services:
   # app
 
   server:
-    build: git://github.com/timlinux/docker-ssh
+    build: ./server
     volumes:
-      - ./keys/key_rsa.pub:/root/.ssh/authorized_keys
-    expose:
-      - "22"
+      - ./.keys/key_rsa.pub:/root/.ssh/authorized_keys
+      - ./server/.data:/data
   # server
 
 # docker-compose

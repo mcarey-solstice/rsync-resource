@@ -29,29 +29,40 @@ fi
 
 # Default the port
 port=${port:-22}
+username="${username:-root}"
+password="${password:-}"
+sshkey="${sshkey:-}"
+directory="${directory:-.}"
 
 # Set common options
-alias rsync="rsync --update --recursive --safe-links --copy-unsafe-links --perms --times --force --compress --progress --port=$port -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'"
+RSYNC_OPTIONS="--update --recursive --safe-links --copy-unsafe-links --perms --times --force --compress --progress --port=$port"
+SSH_OPTIONS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 # Add the sshkey to the agent
 if [ ! -z "$sshkey" ]; then
   # Don't need password if we have an sshkey
   unset password
 
-  ssh-add <(echo "$sshkey")
+  echo "$sshkey" > /root/provided_sshkey
+  SSH_OPTIONS="$SSH_OPTIONS -i /root/provided_sshkey"
 fi
+
+# Prepare the rsync alias
+_rsync="rsync $RSYNC_OPTIONS --rsh='ssh $SSH_OPTIONS'"
+if [ ! -z "$password" ]; then
+  _rsync="sshpass -p '$password' | $_rsync"
+fi
+
+alias rsync="$_rsync"
 
 # Assemble the full target
 target="$hostname"
 
 if [ ! -z "$username" ]; then
-  if [ ! -z "$password" ]; then
-    username="$username:$password"
-  fi
-
   target="$username@$target"
 fi
 
-target="$target:${directory:.}"
+from="${from:-.}"
+dest="${dest:-$from}"
 
 # .init
