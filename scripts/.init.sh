@@ -46,7 +46,7 @@ fi
 
 # Prepare the rsync alias
 _rsync="rsync $RSYNC_OPTIONS --rsh='ssh $SSH_OPTIONS'"
-if [ ! -z "$password" ]; then
+if [ ! -z ${password+x} ]; then
   _rsync="sshpass -p '$password' | $_rsync"
 fi
 
