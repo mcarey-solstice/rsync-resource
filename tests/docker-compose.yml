@@ -1,0 +1,18 @@
+###
+#
+##
+
+version: '3'
+
+services:
+
+  tests:
+    build: .
+    volumes:
+      - ./:/opt/tests
+      - ../scripts:/opt/resources
+  # tests
+
+# services
+
+# tests.docker-compose

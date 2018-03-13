@@ -1,0 +1,69 @@
+#!/bin/bash
+
+set -eu
+
+__DIR__="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+###
+# Spoofs the rsync command
+##
+
+assoc2json() {
+  declare -n v=$1
+  printf '%s\0' "${!v[@]}" "${v[@]}" |
+  jq -Rs 'split("\u0000") | . as $v | (length / 2) as $n | reduce range($n) as $idx ({}; .[$v[$idx]]=$v[$idx+$n])'
+}
+
+parse() {
+  # Format ${username}@${hostname}:${filename}
+  declare -A arr=()
+  arr[username]=
+  arr[hostname]=
+  arr[filename]="$1"
+
+  if [[ ${arr[filename]} = *@* ]]; then
+    arr[username]="${arr[filename]/@*/}"
+    arr[filename]="${arr[filename]#*@}"
+  fi
+
+  if [[ ${arr[filename]} = *:* ]]; then
+    arr[hostname]="${arr[filename]/:*/}"
+    arr[filename]="${arr[filename]#*:}"
+  fi
+
+  assoc2json arr
+}
+
+
+declare -A OPTS=()
+declare -a POSITIONAL=()
+while [[ $# -gt 0 ]]; do
+  key="$1"
+  case "$key" in
+    --*=* ) tmp="${1/=*/}"
+            OPTS["${tmp#--*}"]="${1#--*=}"
+            unset tmp
+            ;;
+    --* )   OPTS["${1#--*}"]=true
+            ;;
+    * )     POSITIONAL+=("$1")
+            ;;
+  esac
+  shift
+done
+
+set -- "${POSITIONAL[@]}"
+
+OPTIONS=$(assoc2json OPTS)
+SERVER=$(parse "$1")
+CLIENT=$(parse "$2")
+
+echo "{
+  \"command\": \"rsync\",
+  \"options\": $OPTIONS,
+  \"client\": $CLIENT,
+  \"server\": $SERVER
+}" | jq '.'
+
+
+# rsync
