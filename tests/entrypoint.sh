@@ -1,5 +1,5 @@
 #!/bin/sh
 
-supervisord -n
+supervisord -nj /supervisord.pid
 
 # entrypoint

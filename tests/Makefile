@@ -32,8 +32,12 @@ help:
 	@echo "Usage: make <command>"
 	@echo ""
 	@echo "  env      Creates the \`.env\` file from \`../.env.example\`"
-	@echo "  keys     Creates SSH key pair"
+	@echo "  build    Builds the docker image"
+	@echo "  start    Starts the docker image"
+	@echo "  stop     Stops the docker image"
+	@echo "  destroy  Destroys the docker image"
 	@echo "  shell    Starts a shell in the docker image"
+	@echo "  run      Runs the test suite within the docker image"
 	@echo ""
 # help
 
@@ -64,5 +68,9 @@ destroy:
 shell: start
 	docker-compose exec tests bash
 # shell
+
+run:
+	docker-compose exec tests /opt/tests/run.sh
+# run
 
 # tests.Makefile

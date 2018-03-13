@@ -34,6 +34,7 @@ help:
 	@echo "    env               Creates the \`.env\` file from \`.env.example\`"
 	@echo "    version           Prints the version of the package"
 	@echo "    shell             Starts a shell in the docker image"
+	@echo "    test              Runs the testing suite"
 	@echo ""
 	@echo "  Building:"
 	@echo "    build             Builds the docker image"
@@ -69,6 +70,10 @@ version:
 shell: build .env
 	docker run -it -v $(PWD):/srv -w /srv --env-file $(ENV_FILE) $(DOCKER_TAG) sh
 # shell
+
+test: build
+	cd tests && ${MAKE} run
+# test
 
 # DOCKER TASKS
 

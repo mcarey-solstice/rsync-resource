@@ -9,8 +9,8 @@ services:
   tests:
     build: .
     volumes:
-      - ./:/opt/tests
-      - ../scripts:/opt/resources
+      - ../:/opt
+    working_dir: /opt
   # tests
 
 # services

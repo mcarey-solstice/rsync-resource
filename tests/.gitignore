@@ -2,6 +2,7 @@
 #
 ##
 
+/_output
 /.env
 
 # tests.gitignore
