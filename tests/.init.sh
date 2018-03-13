@@ -56,7 +56,7 @@ run() {
 
   mkdir -p "$__OUT__"/"$(__script__)"
 
-  "$__DIR__"/../scripts/"$(__script__)" 2> "$__OUT__"/"$(__script__)"/"$(__caller__)".json
+  "$__DIR__"/../scripts/"$(__script__)" > "$__OUT__"/"$(__script__)"/"$(__caller__)".json
 
   diff -q "$__OUT__"/"$(__script__)"/"$(__caller__)".json "$(__dir__)"/"$(__caller__)".json
 
