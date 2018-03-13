@@ -1,0 +1,27 @@
+{
+  "command": "rsync",
+  "options": {
+    "force": "true",
+    "perms": "true",
+    "progress": "true",
+    "copy-unsafe-links": "true",
+    "safe-links": "true",
+    "compress": "true",
+    "rsh": "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null",
+    "update": "true",
+    "dry-run": "true",
+    "times": "true",
+    "port": "22",
+    "recursive": "true"
+  },
+  "client": {
+    "hostname": "",
+    "username": "",
+    "filename": "bar.txt"
+  },
+  "server": {
+    "hostname": "server",
+    "username": "root",
+    "filename": "./foo.txt"
+  }
+}
