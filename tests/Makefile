@@ -23,7 +23,6 @@ VERSION = test
 
 DOCKER_TAG ?= $(APP_NAME)
 
-
 # Helpers
 
 .PHONY: *
@@ -72,5 +71,13 @@ shell: start
 run:
 	docker-compose exec tests /opt/tests/run.sh
 # run
+
+test:
+	docker-compose exec tests /opt/tests/run.sh
+# run
+
+%:
+	docker-compose exec tests /opt/tests/$(@).sh
+# all other tests
 
 # tests.Makefile

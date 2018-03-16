@@ -15,7 +15,7 @@ __OUT__="$__DIR__"/_output
 #   Output: check
 ##
 __suite__() {
-  echo $(basename "$( cd "$( dirname "${BASH_SOURCE[-1]}" )" && pwd )")
+  echo $(basename "$( cd "$( dirname "${BASH_SOURCE[${#BASH_SOURCE[@]}-1]}" )" && pwd )")
 }
 
 ###
@@ -27,7 +27,7 @@ __suite__() {
 #   Output: test_1
 ##
 __caller__() {
-  echo $(basename "${BASH_SOURCE[-1]}" .sh)
+  echo $(basename "${BASH_SOURCE[${#BASH_SOURCE[@]}-1]}" .sh)
 }
 
 ###
@@ -39,7 +39,7 @@ __caller__() {
 #   Output: tests/check
 ##
 __dir__() {
-  echo "$( cd "$( dirname "${BASH_SOURCE[-1]}" )" && pwd )"
+  echo "$( cd "$( dirname "${BASH_SOURCE[${#BASH_SOURCE[@]}-1]}" )" && pwd )"
 }
 
 ###
