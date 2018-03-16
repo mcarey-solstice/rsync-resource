@@ -19,7 +19,7 @@ set -eu
 #
 ##
 
-if [ -z "$hostname" ]; then
+if [ -z ${hostname+x} ]; then
   echo "Missing required variable \`hostname\`"
   exit 2
 fi
@@ -33,7 +33,7 @@ directory="${directory:-.}"
 
 # Set common options
 RSYNC_OPTIONS="--update --recursive --safe-links --copy-unsafe-links --perms --times --force --compress --progress --port=$port"
-SSH_OPTIONS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+SSH_OPTIONS="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 # Add the sshkey to the agent
 if [ ! -z "$sshkey" ]; then
@@ -44,13 +44,14 @@ if [ ! -z "$sshkey" ]; then
   SSH_OPTIONS="$SSH_OPTIONS -i /root/provided_sshkey"
 fi
 
-# Prepare the rsync alias
-_rsync="rsync $RSYNC_OPTIONS --rsh='ssh $SSH_OPTIONS'"
 if [ ! -z ${password+x} ]; then
-  _rsync="sshpass -p '$password' | $_rsync"
+  if [ ! -z "$password" ]; then
+    SSH_OPTIONS="sshpass -p '$password' $SSH_OPTIONS"
+  fi
 fi
 
-alias rsync="$_rsync"
+# Create an rsync alias
+alias rsync="rsync $RSYNC_OPTIONS --rsh='$SSH_OPTIONS'"
 
 # Assemble the full target
 target="$hostname"

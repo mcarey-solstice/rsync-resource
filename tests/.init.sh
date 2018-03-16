@@ -7,13 +7,6 @@ __DIR__="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 __OUT__="$__DIR__"/_output
 
 ###
-# Checks if a function exists
-##
-function_exists() {
-  [ `type -t $1`"" == 'function' ]
-}
-
-###
 # Provides the parent directory of the script that is calling this function
 #
 # Example:
@@ -94,11 +87,16 @@ _post_run() {
 run() {
   _pre_run
 
-  if function_exists main; then
+  local _fn="${1:-}"
+
+  if [ "`type -t main`" = 'function' ]; then
+    echo "Running main method"
     eval "main $@"
-  elif function_exists ${1:-}; then
+  elif [ "`type -t $_fn`" = 'function' ]; then
+    echo "Running $_fn method"
     eval "$@"
   else
+    echo "Running default method"
     Default
   fi
 

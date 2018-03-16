@@ -2,20 +2,22 @@
 
 set -eu
 
-__DIR__="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
 ###
 # Spoofs the rsync command
 ##
 
+###
+# Turns an associative array into json
+##
 assoc2json() {
   declare -n v=$1
-  printf '%s\0' "${!v[@]}" "${v[@]}" |
-  jq -Rs 'split("\u0000") | . as $v | (length / 2) as $n | reduce range($n) as $idx ({}; .[$v[$idx]]=$v[$idx+$n])'
+  printf '%s\0' "${!v[@]}" "${v[@]}" | jq -Rs 'split("\u0000") | . as $v | (length / 2) as $n | reduce range($n) as $idx ({}; .[$v[$idx]]=$v[$idx+$n])'
 }
 
+###
+# Parses a string in the format ${username}@${hostname}:${filename}
+##
 parse() {
-  # Format ${username}@${hostname}:${filename}
   declare -A arr=()
   arr[username]=
   arr[hostname]=
@@ -34,7 +36,11 @@ parse() {
   assoc2json arr
 }
 
-
+###
+# Main
+#
+# Quotations will be lost from in between arguments
+##
 declare -A OPTS=()
 declare -a POSITIONAL=()
 while [[ $# -gt 0 ]]; do
