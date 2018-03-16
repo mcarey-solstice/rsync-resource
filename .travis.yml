@@ -1,0 +1,25 @@
+###
+# CI/CD
+##
+
+sudo: required
+
+services:
+  - docker
+# services
+
+stages:
+  - test
+  - publish
+# stages
+
+jobs:
+  include:
+    - stage: test
+      script: make test
+    - stage: publish
+      script: make publish
+      if: tag =~ ^v.*
+# jobs
+
+#
